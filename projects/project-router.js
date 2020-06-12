@@ -17,6 +17,14 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/resources', (req, res) => {
+  ////// retrieving all resources 
+  Resources.getAll()
+  .then((resources) => {
+    res.json(resources)
+  })
+})
+
 router.post('/addResources', (req, res) => {
 	// adding resources.
 	const resourceData = req.body;
@@ -30,10 +38,10 @@ router.post('/addResources', (req, res) => {
 		});
 });
 
-router.get('/:id/resources', (req, res) => {
-	// retrieving a list of resources.
+router.get('/resources/:id', (req, res) => {
+	// retrieving resources id.
 	const { id } = req.params;
-	Resources.findByResourcesId(id)
+	Resources.findById(id)
 		.then((resource) => {
 			res.json(resource);
 		})
@@ -55,8 +63,19 @@ router.post('/addProject', (req, res) => {
 		});
 });
 
+router.get('/tasks', (req, res)  => {
+  //////// getting all tasks with project name and project descriptions
+  Tasks.getAll()
+  .then((tasks) => {
+    res.json(tasks);
+  })
+  .catch((err) => {
+    res.status(500).json({ message: 'Failed to find tasks' });
+  });
+});
+
 router.get('/:id/tasks/project', (req, res) => {
-	// retrieving a list of resources.
+	// retrieving a task
 	const { id } = req.params;
 	Projects.findByProjectId(id)
 		.then((Projects) => {
@@ -68,7 +87,7 @@ router.get('/:id/tasks/project', (req, res) => {
 });
 
 router.get('/:id/project', (req, res) => {
-	// retrieving a list of resources.
+	// retrieving a list of projects.
 	const { id } = req.params;
 	Projects.findById(id)
 		.then((Projects) => {
@@ -80,7 +99,7 @@ router.get('/:id/project', (req, res) => {
 });
 
 router.post('/addTask', (req, res) => {
-	// adding projects.
+	// adding tasks
 	const taskData = req.body;
 
 	Tasks.addTask(taskData)
