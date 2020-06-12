@@ -7,6 +7,16 @@ const router = express.Router();
 const Resources = require('./resource-model');
 const Tasks = require('./tasks-model');
 
+router.get('/', (req, res) => {
+  Projects.find()
+    .then((project) => {
+      res.json(project);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: 'Failed to get project' });
+    });
+});
+
 router.post('/addResources', (req, res) => {
 	// adding resources.
 	const resourceData = req.body;
